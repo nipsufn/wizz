@@ -4,11 +4,12 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"github.com/FerdinaKusumah/wizz/models"
-	"log"
 	"net"
 	"strings"
 	"time"
+
+	"github.com/FerdinaKusumah/wizz/models"
+	log "github.com/sirupsen/logrus"
 )
 
 const Port = "38899"

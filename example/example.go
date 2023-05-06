@@ -3,9 +3,10 @@ package example
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/FerdinaKusumah/wizz"
 	"github.com/FerdinaKusumah/wizz/models"
-	"log"
+	log "github.com/sirupsen/logrus"
 )
 
 func example() {
