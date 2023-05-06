@@ -33,12 +33,12 @@ func SendUdpMessage(host string, message *models.RequestPayload) (*models.Respon
 		return nil, err
 	}
 	defer conn.Close()
-	// marshall payload to json string
+	// marshal payload to json string
 	if payload, err = json.Marshal(message); err != nil {
 		log.Fatalf(`Unable to marshal payload: %s`, err)
 	}
 	payloadString := string(payload)
-	fmt.Println(fmt.Sprintf(`Payload string: %s`, payloadString))
+	log.Infof(fmt.Sprintf(`Payload string: %s`, payloadString))
 	// send payload to bulb
 	if _, err = conn.Write(payload); err != nil {
 		log.Fatalf(`Unable to send message to UDP: %s`, err)
@@ -51,7 +51,7 @@ func SendUdpMessage(host string, message *models.RequestPayload) (*models.Respon
 	result := []byte(strings.Trim(string(response), "\x00'"))
 	// convert string result to struct again
 	if err = json.Unmarshal(result, responsePayload); err != nil {
-		log.Fatalf(`'Unable to unmarshall response: %s'`, err)
+		log.Fatalf(`'Unable to unmarshal response: %s'`, err)
 	}
 	return responsePayload, nil
 }

@@ -243,3 +243,20 @@ func SetColorColdWhite(bulbIp string, value float64) (*models.ResponsePayload, e
 	}
 	return response, nil
 }
+
+func setPilot(bulbIp string, payloadParams wizzModels.ParamPayload) (*wizzModels.ResponsePayload, error) {
+	var (
+		response = new(wizzModels.ResponsePayload)
+		err      error
+		payload  = &wizzModels.RequestPayload{
+			Method: "setPilot",
+		}
+	)
+
+	payload.Params = payloadParams
+	if response, err = wizzConnection.SendUdpMessage(bulbIp, payload); err != nil {
+		log.Fatalf(`Unable to send message to udp: %s`, err)
+		return nil, err
+	}
+	return response, nil
+}
