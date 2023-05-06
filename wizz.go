@@ -245,7 +245,7 @@ func SetColorColdWhite(bulbIp string, value float64) (*models.ResponsePayload, e
 	return response, nil
 }
 
-func setPilot(bulbIp string, payloadParams models.ParamPayload) (*models.ResponsePayload, error) {
+func SetPilot(bulbIp string, payloadParams models.ParamPayload) (*models.ResponsePayload, error) {
 	var (
 		response = new(models.ResponsePayload)
 		err      error
