@@ -39,7 +39,7 @@ func SendUdpMessage(host string, message *models.RequestPayload) (*models.Respon
 		log.Fatalf(`Unable to marshal payload: %s`, err)
 	}
 	payloadString := string(payload)
-	log.Infof(fmt.Sprintf(`Payload string: %s`, payloadString))
+	log.Tracef(fmt.Sprintf(`Payload string: %s`, payloadString))
 	// send payload to bulb
 	if _, err = conn.Write(payload); err != nil {
 		log.Fatalf(`Unable to send message to UDP: %s`, err)
