@@ -33,7 +33,7 @@ func SendUdpMessage(host string, message *models.RequestPayload) (*models.Respon
 		return nil, err
 	}
 	// TODO: parametrize timeout
-	conn.SetReadDeadline(time.Now().Add(30 * time.Second)
+	conn.SetReadDeadline(time.Now().Add(30 * time.Second))
 	defer conn.Close()
 	// marshal payload to json string
 	if payload, err = json.Marshal(message); err != nil {
