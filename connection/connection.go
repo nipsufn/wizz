@@ -23,37 +23,41 @@ func SendUdpMessage(host string, message *models.RequestPayload) (*models.Respon
 		conn            = new(net.UDPConn)
 		payload         []byte
 	)
-	// doing connection to UDP
+	// initialize connection to UDP
 	if remoteAddr, err = net.ResolveUDPAddr("udp", fmt.Sprintf(`%s:%s`, host, Port)); err != nil {
-		log.Fatalf(`Unable to resolve to udp: %s`, err)
+		log.Errorf(`Unable to resolve to udp: %s`, err)
 		return nil, err
 	}
 	if conn, err = net.DialUDP("udp", nil, remoteAddr); err != nil {
-		log.Fatalf(`Unable to dial up to udp: %s`, err)
+		log.Errorf(`Unable to dial up to udp: %s`, err)
 		return nil, err
 	}
 	// TODO: parametrize timeout
-	conn.SetReadDeadline(time.Now().Add(30 * time.Second))
+	if err = conn.SetReadDeadline(time.Now().Add(30 * time.Second)); err != nil {
+		log.Errorf(`Unable to set UDP timeout: %s`, err)
+		return nil, err
+	}
 	defer conn.Close()
-	// marshal payload to json string
 	if payload, err = json.Marshal(message); err != nil {
-		log.Fatalf(`Unable to marshal payload: %s`, err)
+		log.Errorf(`Unable to marshal payload: %s`, err)
+		return nil, err
 	}
 	payloadString := string(payload)
 	log.Tracef(fmt.Sprintf(`Payload string: %s`, payloadString))
 	// send payload to bulb
 	if _, err = conn.Write(payload); err != nil {
-		log.Fatalf(`Unable to send message to UDP: %s`, err)
+		log.Errorf(`Unable to send message to UDP: %s`, err)
 		return nil, err
 	}
 	// read response from bulb
 	if _, err = bufio.NewReader(conn).Read(response); err != nil {
-		log.Fatalf(`Unable to read message from UDP: %s`, err)
+		log.Errorf(`Unable to read message from UDP: %s`, err)
+		return nil, err
 	}
 	result := []byte(strings.Trim(string(response), "\x00'"))
-	// convert string result to struct again
 	if err = json.Unmarshal(result, responsePayload); err != nil {
-		log.Fatalf(`'Unable to unmarshal response: %s'`, err)
+		log.Errorf(`'Unable to unmarshal response: %s'`, err)
+		return nil, err
 	}
 	return responsePayload, nil
 }

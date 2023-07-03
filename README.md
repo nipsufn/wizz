@@ -38,19 +38,19 @@ func main() {
 	)
 	//--------- Example Get Bulb Config -----------
 	if response, err = phillipWhizz.GetConfig(bulbIp); err != nil {
-		log.Fatalf(`Unable to read response: %s`, err)
+		log.Errorf(`Unable to read response: %s`, err)
 	}
 	if result, err = json.Marshal(response); err != nil {
-		log.Fatalf(`Unable to convert to json string: %s`, err)
+		log.Errorf(`Unable to convert to json string: %s`, err)
 	}
 	fmt.Println(string(result))
 
 	// --------- Example Turn Off light -----------
 	if response, err = phillipWhizz.TurnOffLight(bulbIp); err != nil {
-		log.Fatalf(`Unable to read response: %s`, err)
+		log.Errorf(`Unable to read response: %s`, err)
 	}
 	if result, err = json.Marshal(response); err != nil {
-		log.Fatalf(`Unable to convert to json string: %s`, err)
+		log.Errorf(`Unable to convert to json string: %s`, err)
 	}
 	fmt.Println(string(result))
 	...
