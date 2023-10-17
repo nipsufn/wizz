@@ -13,6 +13,7 @@ import (
 )
 
 const Port = "38899"
+var TimeoutMs = 30 * 1000
 
 func SendUdpMessage(host string, message *models.RequestPayload) (*models.ResponsePayload, error) {
 	var (
@@ -32,7 +33,7 @@ func SendUdpMessage(host string, message *models.RequestPayload) (*models.Respon
 		log.Errorf(`Unable to dial up to udp: %s`, err)
 		return nil, err
 	}
-	if err = conn.SetReadDeadline(time.Now().Add(30 * time.Second)); err != nil {
+	if err = conn.SetReadDeadline(time.Now().Add(TimeoutMs * time.Millisecond)); err != nil {
 		log.Errorf(`Unable to set UDP timeout: %s`, err)
 		return nil, err
 	}
